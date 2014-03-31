@@ -123,8 +123,8 @@ public class Array2 {
 		boolean success = false;
 		
 		Node[][] a1 = this.nodes;
-		String unreached = null;
-		String reached = null;
+		int[] unreached = new int[4];
+		int[] reached = new int[4];
 		
 		if (xpos == destx && ypos == desty) {
 			System.out.println("Final Position" + "[" + xpos + "][" + ypos + "]");
@@ -145,10 +145,17 @@ public class Array2 {
 				System.out.println("TRY NORTH ");
 				success = node.getNorth_link();
 				if (!(success)) { // If link is broken
-					unreached = 0 + "," + ypos + "," + (xpos - 1) + "," + ypos;
-					if (listCheck(list2, unreached)) { // Check for duplicates
-						list2.add(unreached);
-					}
+					
+					unreached[0] = 0;
+					unreached[1] = ypos;
+					unreached[2] = xpos - 1;
+					unreached[3] = ypos;
+					
+					System.out.println("writing unreached array: " + unreached[0] + ","+ unreached[1] + ","+ unreached[2] + ","+ unreached[3]);
+					
+					//if (listCheck(list2, unreached)) { // Check for duplicates
+					//	list2.add(unreached);
+					//}
 				}
 			} else if (desty == ypos && destx > xpos) {
 				System.out.println("TRY SOUTH ");
@@ -164,10 +171,16 @@ public class Array2 {
 					System.out.println("TRY EAST");
 					success = node.getEast_link();
 					if (!(success)) {
-						unreached = 0 + "," + (ypos + 1) + "," + xpos + "," + (a1[xpos].length - 1);
-						if (listCheck(list2, unreached)) {
-							list2.add(unreached);
-						}
+						
+						unreached[0] = 0;
+						unreached[1] = ypos + 1;
+						unreached[2] = xpos;
+						unreached[3] = a1[xpos].length - 1;
+						
+						System.out.println("writing unreached array: " + unreached[0] + ","+ unreached[1] + ","+ unreached[2] + ","+ unreached[3]);
+						//if (listCheck(list2, unreached)) {
+						//	list2.add(unreached);
+						//}
 					}
 					if ((a1[xpos][ypos + 1].isVisited == false) && success && this.backtrack(xpos, ypos + 1, destx, desty, list2)) {
 						return true;
@@ -176,8 +189,14 @@ public class Array2 {
 							System.out.println("TRY NORTH from Position" + "[" + xpos + "][" + ypos + "]");
 							success = node.getNorth_link();
 							if (success) {
-								reached = 0 + "," + ypos + "," + (xpos - 1) + "," + (a1[ypos].length - 1);
-								System.out.println("Reached: " + reached);
+								
+								reached[0] = 0;
+								reached[1] = ypos;
+								reached[2] = xpos - 1;
+								reached[3] = a1[ypos].length - 1;
+								
+								System.out.println("writing reached array: " + reached[0] + ","+ reached[1] + ","+ reached[2] + ","+ reached[3]);
+								compArray(unreached, reached);
 							}
 						} else if (destx > xpos && xpos != this.xsize - 1) { // For minimal routing
 							System.out.println("TRY SOUTH from Position" + "[" + xpos + "][" + ypos + "]");
@@ -191,6 +210,12 @@ public class Array2 {
 		}
 				
 		return false;
+	}
+	
+	public String compArray (int[] arr1, int[] arr2) {
+		
+		String result = null;		
+		return result;
 	}
 	
 	public static void main(String[] args) {
